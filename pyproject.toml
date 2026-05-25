@@ -178,6 +178,12 @@ branch = false
 omit = [
     "src/**/__init__.py",
     "src/presentation/cli/__main__.py",
+    # Network-tier fetchers — meaningfully testable only against a live
+    # browser pool / live WAF-protected sites (see tests/infrastructure/
+    # *_smoke.py marked `@pytest.mark.network`). Excluded from the
+    # CI-time coverage gate; exercised manually via `make test-network`.
+    "src/infrastructure/fetcher/browser_fetcher.py",
+    "src/infrastructure/fetcher/curl_cffi_fetcher.py",
 ]
 
 [tool.coverage.report]

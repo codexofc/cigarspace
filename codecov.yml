@@ -29,6 +29,8 @@ parsers:
 ignore:
   - "src/**/__init__.py"
   - "src/presentation/cli/__main__.py"
+  - "src/infrastructure/fetcher/browser_fetcher.py"
+  - "src/infrastructure/fetcher/curl_cffi_fetcher.py"
   - "tests/**"
   - "migrations/**"
   - "docs/**"
