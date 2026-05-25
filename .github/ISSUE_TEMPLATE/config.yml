@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/codexofc/cigarspace/discussions
+    about: Questions, ideas, RFC-style proposals. Use this before opening an issue for non-defects.
+  - name: Security disclosure
+    url: https://github.com/codexofc/cigarspace/security/advisories/new
+    about: Report a vulnerability privately. Do NOT open a public issue for security.
+  - name: Commercial licensing
+    url: mailto:Michon.arthurperso@gmail.com?subject=Cigarspace%20Commercial%20License
+    about: Need a commercial license? Email us.

@@ -1,0 +1,135 @@
+[project]
+name = "cigarspace"
+version = "1.0.0"
+description = "Cigarspace — a knowledge platform for the global cigar market."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "PolyForm-Noncommercial-1.0.0" }
+authors = [{ name = "Arthur Michon" }]
+keywords = ["cigars", "scraping", "customs", "matching", "fastapi"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Office/Business",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+]
+
+dependencies = [
+    "pydantic>=2.6,<3",
+    "pydantic-settings>=2.2,<3",
+    "sqlalchemy[asyncio]>=2.0.27,<3",
+    "asyncpg>=0.29,<1",
+    "alembic>=1.13,<2",
+    "redis>=5.0,<6",
+    "typer>=0.12,<1",
+    "rich>=13.7,<14",
+    "structlog>=24.1,<25",
+    "httpx>=0.27,<1",
+    "curl-cffi>=0.7,<1",
+    "patchright>=1.50,<2",
+    "selectolax>=0.3,<1",
+    "arq>=0.25,<1",
+    "pillow>=11.0,<12",
+    "blake3>=0.4,<1",
+    "aioboto3>=13.0,<15",
+    "pdfplumber>=0.11,<1",
+    "pyyaml>=6.0,<7",
+    "odfpy>=1.4.1",
+    "pgvector>=0.2,<1",
+    "rapidfuzz>=3.6,<4",
+    "sentence-transformers>=3.0,<5",
+    "torch>=2.2,<3",
+    "fastapi>=0.110,<1",
+    "uvicorn[standard]>=0.27,<1",
+    "pyjwt>=2.8,<3",
+    "argon2-cffi>=23.1,<24",
+    "slowapi>=0.1.9,<1",
+    "email-validator>=2.3.0",
+]
+
+[project.scripts]
+cigarspace = "presentation.cli.__main__:app"
+# Legacy alias retained for muscle memory; will be removed in a future major.
+cigars = "presentation.cli.__main__:app"
+
+[project.urls]
+Homepage = "https://github.com/codexofc/cigarspace"
+Repository = "https://github.com/codexofc/cigarspace"
+Issues = "https://github.com/codexofc/cigarspace/issues"
+Changelog = "https://github.com/codexofc/cigarspace/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0,<9",
+    "pytest-asyncio>=0.23,<1",
+    "respx>=0.21,<1",
+    "ruff>=0.4,<1",
+    "mypy>=1.10,<2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/domain",
+    "src/application",
+    "src/infrastructure",
+    "src/presentation",
+]
+
+# ---------------------------------------------------------------------------
+# Tooling
+# ---------------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",
+    "I", "B", "UP", "N", "S", "A", "C4", "T20", "RET", "SIM", "TCH",
+]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["S101", "S105", "S106"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["domain", "application", "infrastructure", "presentation"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+markers = [
+    "integration: tests requiring live services (PG, Redis)",
+    "e2e: end-to-end pipeline tests",
+    "network: tests that hit real remote hosts (kept out of default runs)",
+]

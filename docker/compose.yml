@@ -1,0 +1,218 @@
+name: cigars
+
+services:
+  postgres:
+    # pgvector/pgvector:pg16 = Postgres 16 with the pgvector extension
+    # pre-installed (required by the hybrid cigar/customs matcher).
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cigars}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cigars}
+      POSTGRES_DB: ${POSTGRES_DB:-cigars}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cigars} -d ${POSTGRES_DB:-cigars}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # -------------------------------------------------------------------------
+  # SeaweedFS — S3-compatible object store for media assets.
+  # Lighter than MinIO, runs master+volume+filer+s3 in a single process.
+  # API S3 means we can swap to AWS S3 / Cloudflare R2 by changing the
+  # endpoint URL only — no application code change.
+  # -------------------------------------------------------------------------
+  seaweedfs:
+    image: chrislusf/seaweedfs:3.78
+    restart: unless-stopped
+    command: >
+      server
+      -dir=/data
+      -s3
+      -s3.config=/etc/seaweed/s3.json
+      -ip=seaweedfs
+    volumes:
+      - seaweed-data:/data
+      - ./seaweed/s3.json:/etc/seaweed/s3.json:ro
+    ports:
+      - "127.0.0.1:8333:8333"   # S3 API endpoint
+      - "127.0.0.1:9333:9333"   # Master UI / status
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9333/cluster/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/api.Dockerfile
+    image: cigars-app:latest
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    environment:
+      # Inside the Compose network, services resolve by name.
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+      S3_ENDPOINT_URL: http://seaweedfs:8333
+    volumes:
+      - ./data:/app/data
+    networks:
+      - default
+    # The default ENTRYPOINT runs the CLI. Override per command, e.g.:
+    #   docker compose run --rm app healthcheck
+    #   docker compose run --rm app info
+
+  # -------------------------------------------------------------------------
+  # Public HTTP API — FastAPI behind Uvicorn.
+  # Exposes /api/v1 with OAuth2 + read endpoints + admin job sub-resources.
+  # Swagger UI lives at /api/v1/docs.
+  # -------------------------------------------------------------------------
+  api:
+    build:
+      context: ..
+      dockerfile: docker/api.Dockerfile
+    image: cigars-app:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+      S3_ENDPOINT_URL: http://seaweedfs:8333
+    command:
+      - "uvicorn"
+      - "presentation.api.main:app"
+      - "--host=0.0.0.0"
+      - "--port=8000"
+      - "--workers=${API_WORKERS:-2}"
+      - "--proxy-headers"
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8000/api/v1/health > /dev/null"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - default
+
+  # -------------------------------------------------------------------------
+  # Web admin UI — React SPA served by nginx; reverse-proxies
+  # /api/* to the FastAPI service so the HttpOnly auth cookie stays same-origin.
+  # -------------------------------------------------------------------------
+  web:
+    build:
+      context: ../web
+      dockerfile: ../docker/web.Dockerfile
+    image: cigars-web:latest
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/ > /dev/null"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - default
+
+  # -------------------------------------------------------------------------
+  # L2 — VPN sidecar (gluetun) bound to ProtonVPN Free
+  # -------------------------------------------------------------------------
+  # NOTE: Proton Free requires VPN_SERVICE_PROVIDER=custom + manual WireGuard
+  # parameters (the native `protonvpn` provider needs a paid plan to refresh
+  # its server list). Add WIREGUARD_* values to your local .env (gitignored).
+  # Started with profile "vpn": `docker compose --profile vpn up -d`
+  gluetun:
+    image: qmcgaw/gluetun:v3.41.1
+    profiles: ["vpn"]
+    cap_add: [NET_ADMIN]
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      VPN_SERVICE_PROVIDER: custom
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: ${PROTON_WG_PRIVATE_KEY}
+      WIREGUARD_PUBLIC_KEY: ${PROTON_WG_PUBLIC_KEY}
+      WIREGUARD_ENDPOINT_IP: ${PROTON_WG_ENDPOINT_IP}
+      WIREGUARD_ENDPOINT_PORT: ${PROTON_WG_ENDPOINT_PORT:-51820}
+      WIREGUARD_ADDRESSES: ${PROTON_WG_ADDRESSES:-10.2.0.2/32}
+      WIREGUARD_MTU: ${PROTON_WG_MTU:-1320}
+      # Use gluetun's built-in DoT (DNS-over-TLS) so DNS lookups don't depend
+      # on Proton's internal DNS being reachable before the tunnel is up.
+      DOT: "on"
+      HTTPPROXY: "on"
+      HTTPPROXY_LISTENING_ADDRESS: ":8888"
+      LOG_LEVEL: info
+    ports:
+      - "127.0.0.1:8888:8888"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "https://api.ipify.org"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # L3 — Tor SOCKS5 fallback (last-resort, slow but full IP diversity)
+  # Started with profile "tor": `docker compose --profile tor up -d`
+  # -------------------------------------------------------------------------
+  tor:
+    image: dperson/torproxy:latest
+    profiles: ["tor"]
+    environment:
+      LOCATION: "DE,FR,NL,SE"      # preferred exit-node countries
+    ports:
+      - "127.0.0.1:9050:9050"      # SOCKS5
+    restart: unless-stopped
+
+volumes:
+  pg-data:
+  redis-data:
+  seaweed-data:
+
+networks:
+  default:
+    name: cigars-net

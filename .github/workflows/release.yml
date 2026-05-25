@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: release-please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # `simple` strategy: every Conventional Commit since the previous
+          # tag is grouped into the CHANGELOG. The repo version lives in
+          # `pyproject.toml` ([project].version) and in web/package.json —
+          # we bump them manually before tagging or via the release PR.

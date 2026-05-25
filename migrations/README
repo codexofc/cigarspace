@@ -1,0 +1,13 @@
+Generic single-database configuration with an async driver (asyncpg).
+
+This directory holds Alembic migrations for the cigars project.
+
+- env.py            : async-aware runner
+- script.py.mako    : template for new migrations
+- versions/         : individual revision files
+
+Create a new migration:
+    make revision m="add cigar table"
+
+Apply pending migrations:
+    make migrate

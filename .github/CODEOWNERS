@@ -1,0 +1,18 @@
+# Default owners — every PR pings them for review.
+* @codexofc
+
+# Backend
+/src/                @codexofc
+/migrations/         @codexofc
+/tests/              @codexofc
+
+# Frontend
+/web/                @codexofc
+
+# Infra
+/docker/             @codexofc
+/.github/            @codexofc
+
+# Docs are open — anyone in the core team can review.
+/docs/               @codexofc
+*.md                 @codexofc

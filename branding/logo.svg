@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" width="360" height="80" role="img" aria-label="Cigarspace">
+  <title>Cigarspace</title>
+  <defs>
+    <linearGradient id="cigarGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3A2418"/>
+      <stop offset="50%" stop-color="#6F4E37"/>
+      <stop offset="100%" stop-color="#A47148"/>
+    </linearGradient>
+  </defs>
+  <!-- Stylised cigar -->
+  <g transform="translate(8 24)">
+    <rect x="0" y="0" width="56" height="14" rx="7" fill="url(#cigarGrad)"/>
+    <rect x="2" y="0" width="14" height="14" rx="7" fill="#1F1A18"/>
+    <path d="M58 7 L70 0 L70 14 Z" fill="#D7AE6B"/>
+    <circle cx="49" cy="7" r="1.2" fill="#D7AE6B" opacity="0.8"/>
+  </g>
+  <!-- Wordmark -->
+  <g font-family="Inter, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="32" fill="#1F1A18">
+    <text x="90" y="50">Cigar<tspan fill="#6F4E37">space</tspan></text>
+  </g>
+</svg>

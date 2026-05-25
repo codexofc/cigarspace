@@ -1,0 +1,101 @@
+# Customs price sources — seed file for the `customs_source` table.
+#
+# Reload at any time with:  cigars customs-seed
+# Operator-managed catalog. Runtime state (last_checked_at, …) lives in
+# the DB and is preserved across re-seeds.
+#
+# To add a new juridiction:
+#   1. Write an adapter in src/infrastructure/customs/{discovery,extractors}/
+#   2. Pick its `name` for discovery_parser_name / extraction_parser_name
+#   3. Add an entry below and run `cigars customs-seed`
+
+sources:
+  # ------------------------------------------------------------------
+  # France — arrêtés JORF "portant homologation des prix de vente
+  # au détail des tabacs manufacturés", publiés 3-6 fois par an.
+  # ------------------------------------------------------------------
+  # HTML scraping fallback — kept as adapter, deactivated by default since
+  # the WAF returns 403 in production. Use only for local dev / debugging.
+  - code: fr-legifrance-jorf
+    country_code: FR
+    display_name: "France — Légifrance JORF (HTML scraping, fallback)"
+    index_url: "https://www.legifrance.gouv.fr/search/jorf?fonds=JORF&query=homologation+prix+tabac+manufactur%C3%A9s&searchField=ALL&tab_selection=jorf"
+    discovery_parser_name: legifrance-jorf
+    extraction_parser_name: legifrance-html
+    default_currency_code: EUR
+    is_active: false
+    cron_expression: "0 6 * * *"
+    config_json: {}
+
+  # ------------------------------------------------------------------
+  # France — DILA Légifrance API (PISTE OAuth, JSON structuré).
+  # Source canonique en production : pas de WAF, format stable.
+  # Pré-requis : créer un compte sur https://piste.gouv.fr/, créer une
+  # application "Légifrance" en mode client_credentials, et coller le
+  # client_id / client_secret dans .env (PISTE_CLIENT_ID, PISTE_CLIENT_SECRET).
+  # ------------------------------------------------------------------
+  # DILA reste actif pour traquer les NOR (référence réglementaire), mais
+  # depuis 2024 les articles JORF ne contiennent plus le tableau — ils
+  # renvoient à l'Open Data Douanes (voir source `fr-douane-opendata`).
+  # L'extracteur ne remontera plus d'entries pour les arrêtés modernes,
+  # c'est attendu.
+  - code: fr-legifrance-dila
+    country_code: FR
+    display_name: "France — DILA Légifrance API (PISTE)"
+    index_url: "https://api.piste.gouv.fr/dila/legifrance/lf-engine-app/search"
+    discovery_parser_name: legifrance-dila
+    extraction_parser_name: legifrance-dila-json
+    default_currency_code: EUR
+    is_active: true
+    cron_expression: "0 6 * * *"
+    config_json:
+      query: "homologation prix tabacs manufactures"
+      type_champ: TITLE
+      type_recherche: TOUS_LES_MOTS_DANS_UN_CHAMP
+      title_must_contain: ["homologation", "tabac"]
+      page_size: 25
+      max_pages: 5
+
+  # ------------------------------------------------------------------
+  # France — DGDDI Open Data (source canonique des PRIX depuis 2024).
+  # Le portail publie un fichier ODS « Maquette JORF <date>.ods »
+  # par arrêté. Le regulator_reference est synthétique FR-DOUANE-<date>.
+  # ------------------------------------------------------------------
+  - code: fr-douane-opendata
+    country_code: FR
+    display_name: "France — DGDDI Open Data (prix tabac)"
+    index_url: "https://www.douane.gouv.fr/la-douane/opendata/categories/tabacs-manufactures"
+    discovery_parser_name: douane-opendata
+    extraction_parser_name: douane-ods
+    default_currency_code: EUR
+    is_active: true
+    cron_expression: "0 6 * * *"
+    config_json:
+      prefer_extension: ods
+
+  # ------------------------------------------------------------------
+  # Suisse — OFDF / BAZG, publication des prix de vente au détail des
+  # tabacs manufacturés. L'URL d'index exacte n'est pas encore identifiée
+  # (le site bazg.admin.ch retourne 403/404 sur les WebFetch standards).
+  # L'adapter generic-html-index + ofdf-generic est livré et prêt :
+  # une fois l'URL trouvée, faire:
+  #   UPDATE customs_source SET
+  #       index_url = '<URL réelle>',
+  #       config_json = '{"item_selector": "...", "link_selector": "...", ...}',
+  #       is_active = true
+  #     WHERE code = 'ch-ofdf';
+  # ------------------------------------------------------------------
+  - code: ch-ofdf
+    country_code: CH
+    display_name: "Suisse — OFDF/BAZG prix tabac"
+    index_url: "TBD"
+    discovery_parser_name: generic-html-index
+    extraction_parser_name: ofdf-generic
+    default_currency_code: CHF
+    is_active: false
+    cron_expression: "0 7 * * 1"
+    config_json:
+      item_selector: "TBD"
+      link_selector: "TBD"
+      date_selector: "TBD"
+      date_locale: "iso"

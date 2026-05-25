@@ -1,0 +1,39 @@
+name: cigarspace-demo
+
+# One-shot stack — everything in a single container with embedded Postgres
+# + Redis. Suitable for demos and local kicking-of-the-tyres only; never
+# use in production. The dedicated `compose.yml` is what production
+# deployments target.
+#
+# Run:
+#   docker compose -f docker/compose.demo.yml up --build
+#   open http://localhost:8080
+#
+# Bootstrap an admin (in another terminal, while the stack is up):
+#   docker compose -f docker/compose.demo.yml exec cigarspace \
+#     /app/.venv/bin/cigarspace users create \
+#       --email admin@example.com --password 's3cret' --admin
+
+services:
+  cigarspace:
+    build:
+      context: ..
+      dockerfile: docker/all-in-one.Dockerfile
+      target: demo
+    image: cigarspace:demo
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      APP_ENV: dev
+      LOG_FORMAT: console
+      API_CORS_ORIGINS: '["http://localhost:8080"]'
+      API_JWT_SECRET: "demo-secret-change-me-in-production"
+    volumes:
+      - cigarspace-demo-data:/var/lib/postgresql
+      - cigarspace-demo-redis:/var/lib/redis
+      - cigarspace-demo-media:/var/lib/seaweedfs
+
+volumes:
+  cigarspace-demo-data:
+  cigarspace-demo-redis:
+  cigarspace-demo-media:

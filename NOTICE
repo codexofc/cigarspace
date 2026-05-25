@@ -1,0 +1,67 @@
+Cigarspace
+Copyright (c) 2026 Arthur Michon
+
+This product is licensed under the PolyForm Noncommercial 1.0.0 license. See
+LICENSE for the full text. Commercial use requires a separate commercial
+license — see COMMERCIAL_LICENSE.md.
+
+Required Notice: Copyright Arthur Michon (https://github.com/codexofc/cigarspace)
+
+================================================================================
+Third-party software
+================================================================================
+
+This product bundles or depends on a number of open-source components. The
+following non-exhaustive list summarises each direct dependency and its
+upstream license. Run `make notice` to regenerate a full machine-readable
+inventory (pip-licenses + license-checker).
+
+Python (see pyproject.toml for exact versions):
+  - FastAPI          MIT     — https://github.com/tiangolo/fastapi
+  - Uvicorn          BSD     — https://github.com/encode/uvicorn
+  - Pydantic         MIT     — https://github.com/pydantic/pydantic
+  - SQLAlchemy       MIT     — https://github.com/sqlalchemy/sqlalchemy
+  - asyncpg          Apache-2.0 — https://github.com/MagicStack/asyncpg
+  - Alembic          MIT     — https://github.com/sqlalchemy/alembic
+  - redis-py         MIT     — https://github.com/redis/redis-py
+  - arq              MIT     — https://github.com/python-arq/arq
+  - httpx            BSD-3   — https://github.com/encode/httpx
+  - curl-cffi        MIT     — https://github.com/lexiforest/curl_cffi
+  - selectolax       MIT     — https://github.com/rushter/selectolax
+  - pdfplumber       MIT     — https://github.com/jsvine/pdfplumber
+  - odfpy            Apache-2.0 — https://github.com/eea/odfpy
+  - pgvector         MIT     — https://github.com/pgvector/pgvector
+  - sentence-transformers Apache-2.0 — https://github.com/UKPLab/sentence-transformers
+  - rapidfuzz        MIT     — https://github.com/rapidfuzz/RapidFuzz
+  - PyJWT            MIT     — https://github.com/jpadilla/pyjwt
+  - argon2-cffi      MIT     — https://github.com/hynek/argon2-cffi
+  - slowapi          MIT     — https://github.com/laurents/slowapi
+  - structlog        MIT/Apache-2.0 — https://github.com/hynek/structlog
+  - aioboto3         Apache-2.0 — https://github.com/terrycain/aioboto3
+  - Pillow           HPND    — https://github.com/python-pillow/Pillow
+  - blake3           Apache-2.0/MIT — https://github.com/oconnor663/blake3-py
+  - typer            MIT     — https://github.com/tiangolo/typer
+  - rich             MIT     — https://github.com/Textualize/rich
+  - patchright       MIT     — https://github.com/Kaliiiiiiiiii-Vinyzu/patchright
+
+Node / web (see web/package.json):
+  - React            MIT     — https://github.com/facebook/react
+  - Vite             MIT     — https://github.com/vitejs/vite
+  - TanStack Query   MIT     — https://github.com/TanStack/query
+  - React Router     MIT     — https://github.com/remix-run/react-router
+  - Zustand          MIT     — https://github.com/pmndrs/zustand
+  - react-hook-form  MIT     — https://github.com/react-hook-form/react-hook-form
+  - Tailwind CSS     MIT     — https://github.com/tailwindlabs/tailwindcss
+  - Radix UI         MIT     — https://github.com/radix-ui/primitives
+  - lucide-react     ISC     — https://github.com/lucide-icons/lucide
+  - react-intl       BSD-3   — https://github.com/formatjs/formatjs
+
+Container runtime:
+  - PostgreSQL + pgvector  PostgreSQL License + PostgreSQL License
+  - Redis            BSD/RSALv2 (depending on version)
+  - SeaweedFS        Apache-2.0
+  - nginx            BSD-2-Clause
+
+Refer to each upstream project's repository for the authoritative license
+text. The MIT, BSD and Apache notices are kept in the binary distribution
+under /usr/share/licenses/ when applicable.

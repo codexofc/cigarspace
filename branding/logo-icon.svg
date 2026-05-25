@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Cigarspace icon">
+  <title>Cigarspace icon</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3A2418"/>
+      <stop offset="60%" stop-color="#6F4E37"/>
+      <stop offset="100%" stop-color="#A47148"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#1F1A18"/>
+  <g transform="translate(6 26)">
+    <rect x="0" y="0" width="40" height="12" rx="6" fill="url(#g)"/>
+    <rect x="2" y="0" width="10" height="12" rx="6" fill="#0F0B0A"/>
+    <path d="M42 6 L52 0 L52 12 Z" fill="#D7AE6B"/>
+  </g>
+</svg>

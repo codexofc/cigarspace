@@ -1,0 +1,50 @@
+# VCS
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Python tooling
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime data (never bake into image)
+data/
+secrets/
+*.pem
+*.key
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Tests & docs (kept out of runtime image)
+tests/
+docs/
+
+# Web build artefacts
+web/node_modules/
+web/dist/
+web/.vite/
+
+# CI / branding / agents
+.github/
+.pre-commit-config.yaml

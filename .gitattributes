@@ -1,0 +1,22 @@
+# Normalise line endings across platforms.
+* text=auto eol=lf
+
+# Treat these as binary (no diffing).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.zip binary
+
+# GitHub linguist hints — avoid the language stats being polluted by
+# generated artifacts, tests fixtures and vendored copies.
+tests/fixtures/** linguist-vendored
+tests/fixtures/**/*.html linguist-detectable=false
+web/src/lib/api/** linguist-generated=true
+docs/** linguist-documentation=true
+*.svg linguist-detectable=false

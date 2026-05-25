@@ -1,0 +1,26 @@
+{
+  "identities": [
+    {
+      "name": "cigars-app",
+      "credentials": [
+        {
+          "accessKey": "cigars-dev",
+          "secretKey": "cigars-dev-secret-change-me"
+        }
+      ],
+      "actions": [
+        "Read",
+        "Write",
+        "List",
+        "Tagging",
+        "Admin"
+      ]
+    },
+    {
+      "name": "anonymous",
+      "actions": [
+        "Read"
+      ]
+    }
+  ]
+}
