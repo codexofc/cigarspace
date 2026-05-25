@@ -21,7 +21,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [light, demo]
+        # `demo` target requires the apt.postgresql.org repo for
+        # postgresql-15-pgvector; will be re-enabled once that Dockerfile
+        # stage is wired. Light image is the production image.
+        target: [light]
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
