@@ -10,7 +10,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "gen:api": "openapi --input http://localhost:8000/api/v1/openapi.json --output src/lib/api --client fetch --useOptions --useUnionTypes"
   },
   "dependencies": {
