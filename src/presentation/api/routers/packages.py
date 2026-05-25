@@ -14,7 +14,6 @@ from presentation.api.dependencies import UnitOfWorkDep
 from presentation.api.hypermedia import make_links
 from presentation.api.schemas.package import PackageResponse
 
-
 router = APIRouter(prefix="/cigars/{key}/packages", tags=["Packages"])
 
 

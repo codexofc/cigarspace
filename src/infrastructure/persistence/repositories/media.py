@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import select
@@ -75,7 +75,7 @@ class PgMediaAssetRepository:
         if media_blob_hash is not None:
             existing.media_blob_hash = media_blob_hash
         if status == MediaStatus.OK and existing.downloaded_at is None:
-            existing.downloaded_at = datetime.now(tz=timezone.utc)
+            existing.downloaded_at = datetime.now(tz=UTC)
         await self._session.flush()
         await self._session.refresh(existing)
         return media_to_domain(existing)

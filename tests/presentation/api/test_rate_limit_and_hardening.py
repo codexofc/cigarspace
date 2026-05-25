@@ -5,13 +5,9 @@
 
 from __future__ import annotations
 
-import asyncio
-
 import pytest
 
-from infrastructure.config import get_settings
 from presentation.api.main import _validate_prod_hardening
-
 
 pytestmark = pytest.mark.asyncio
 

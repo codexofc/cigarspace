@@ -11,7 +11,6 @@ from presentation.api.dependencies import CurrentUserDep
 from presentation.api.hypermedia import make_links
 from presentation.api.schemas.user import UserResponse
 
-
 router = APIRouter(prefix="/me", tags=["Users"])
 
 

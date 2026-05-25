@@ -15,14 +15,12 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable
-from datetime import date
 from typing import Any, ClassVar
 
 import httpx
 
 from application.ports.customs_extractor import (
     CustomsPriceExtraction,
-    ICustomsExtractorAdapter,
 )
 from infrastructure.config import get_settings
 from infrastructure.customs.extractors.legifrance_html import LegifranceHtmlExtractor

@@ -20,7 +20,6 @@ from selectolax.parser import HTMLParser
 
 from application.ports.customs_discovery import (
     DiscoveredPublication,
-    ICustomsDiscoveryAdapter,
 )
 from infrastructure.customs._date_fr import parse_french_date
 

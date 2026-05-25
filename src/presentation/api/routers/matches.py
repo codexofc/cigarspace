@@ -26,7 +26,6 @@ from presentation.api.hypermedia import (
 from presentation.api.schemas.base import PaginatedResponse
 from presentation.api.schemas.match import MatchPatchRequest, MatchResponse
 
-
 router = APIRouter(prefix="/matches", tags=["Matches"])
 
 

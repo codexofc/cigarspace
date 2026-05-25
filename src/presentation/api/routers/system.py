@@ -19,7 +19,6 @@ from presentation.api.schemas.system import (
     VersionResponse,
 )
 
-
 router = APIRouter(tags=["System"])
 
 
@@ -125,7 +124,8 @@ async def health(
     summary="Build / schema version metadata.",
 )
 async def version_endpoint() -> VersionResponse:
-    from importlib.metadata import PackageNotFoundError, version as pkg_version
+    from importlib.metadata import PackageNotFoundError
+    from importlib.metadata import version as pkg_version
 
     try:
         v = pkg_version("cigars")

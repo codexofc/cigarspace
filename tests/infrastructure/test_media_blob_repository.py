@@ -3,7 +3,7 @@
 # See LICENSE for terms; COMMERCIAL_LICENSE.md for commercial use.
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -22,7 +22,7 @@ def _blob(content_hash: str = "a" * 64) -> MediaBlob:
         byte_size=12_345,
         width_px=800,
         height_px=600,
-        first_seen_at=datetime.now(tz=timezone.utc),
+        first_seen_at=datetime.now(tz=UTC),
     )
 
 

@@ -7,8 +7,7 @@ the use case still hits the cigars_test database."""
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -42,7 +41,7 @@ class _CannedFetcher:
             headers={"content-type": "text/html; charset=utf-8"},
             body=body,
             elapsed_s=0.01,
-            fetched_at=datetime.now(tz=timezone.utc),
+            fetched_at=datetime.now(tz=UTC),
         )
 
     async def aclose(self) -> None:

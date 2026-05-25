@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import StrEnum
 
 from application.ports.fetcher import FetchRequest, IFetcher
@@ -159,7 +159,7 @@ class IngestProductUrlUseCase:
         #    Only when pack_size is known; price/sku/last_seen_at refreshed
         #    on every re-ingest.
         if extraction.pack_size is not None:
-            now = datetime.now(tz=timezone.utc)
+            now = datetime.now(tz=UTC)
             existing_pkg = await uow.cigar_packages.find_by_cigar_and_url(cigar.id, url)
             if existing_pkg is None:
                 await uow.cigar_packages.add(

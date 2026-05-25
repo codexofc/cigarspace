@@ -39,7 +39,6 @@ import httpx
 
 from application.ports.customs_discovery import (
     DiscoveredPublication,
-    ICustomsDiscoveryAdapter,
 )
 from infrastructure.config import get_settings
 from infrastructure.customs.piste_oauth import PisteOAuthClient

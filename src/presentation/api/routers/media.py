@@ -17,7 +17,6 @@ from presentation.api.dependencies import UnitOfWorkDep
 from presentation.api.hypermedia import make_links
 from presentation.api.schemas.media import MediaAssetResponse
 
-
 router = APIRouter(tags=["Media"])
 
 

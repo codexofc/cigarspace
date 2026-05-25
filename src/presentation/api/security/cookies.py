@@ -15,7 +15,6 @@ from fastapi import Request, Response
 
 from infrastructure.config.settings import ApiSettings
 
-
 REFRESH_COOKIE_NAME = "cigars_refresh"
 COOKIE_PATH = "/api/v1/auth"
 

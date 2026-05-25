@@ -30,6 +30,9 @@ from application.ports.fetcher import (
     RateLimitedError,
     ServerError,
 )
+from application.ports.media_blob_repository import IMediaBlobRepository
+from application.ports.media_repository import IMediaAssetRepository
+from application.ports.media_storage import IMediaStorage
 from application.ports.parser import (
     BlendLeafExtraction,
     IListingParser,
@@ -37,9 +40,6 @@ from application.ports.parser import (
     ListingExtraction,
     ProductExtraction,
 )
-from application.ports.media_blob_repository import IMediaBlobRepository
-from application.ports.media_repository import IMediaAssetRepository
-from application.ports.media_storage import IMediaStorage
 from application.ports.repository import IRepository
 from application.ports.source_repository import ISourceRecordRepository
 from application.ports.unit_of_work import IUnitOfWork

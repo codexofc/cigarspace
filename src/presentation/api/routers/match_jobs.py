@@ -14,7 +14,6 @@ from presentation.api.hypermedia import make_links
 from presentation.api.schemas.base import JobAcceptedResponse
 from presentation.api.schemas.job import MatchJobRequest
 
-
 router = APIRouter(prefix="/match-jobs", tags=["Jobs"])
 
 

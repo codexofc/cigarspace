@@ -23,7 +23,6 @@ from presentation.api.schemas.customs import (
     CustomsPublicationResponse,
 )
 
-
 router = APIRouter(prefix="/customs-publications", tags=["Customs Publications"])
 
 

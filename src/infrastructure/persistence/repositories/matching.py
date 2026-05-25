@@ -21,7 +21,6 @@ from infrastructure.persistence.models import (
     CustomsPriceEntryModel,
 )
 
-
 # Canonical SQL that builds the embedding text for a cigar. Kept here (not in
 # the Python normalization layer) because it lets us push the work into the
 # DB and avoids materializing every row in Python when we only need the text.

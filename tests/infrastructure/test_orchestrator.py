@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import random
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -51,7 +51,7 @@ def _ok(url: str = "https://example.com/x") -> FetchResponse:
         headers={"content-type": "text/html"},
         body=b"hi",
         elapsed_s=0.01,
-        fetched_at=datetime.now(tz=timezone.utc),
+        fetched_at=datetime.now(tz=UTC),
     )
 
 

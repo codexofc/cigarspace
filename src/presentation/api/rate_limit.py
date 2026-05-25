@@ -24,7 +24,6 @@ from infrastructure.observability.logging import get_logger
 from presentation.api.errors import _build  # re-use the RFC 7807 builder
 from presentation.api.security.jwt import JwtError, decode_access_token
 
-
 _log = get_logger("api.rate_limit")
 
 

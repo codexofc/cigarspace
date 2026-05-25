@@ -18,7 +18,7 @@ The flows enforce:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from domain.entities.api_user import ApiUser, RefreshToken
 from infrastructure.config.settings import ApiSettings
@@ -30,8 +30,7 @@ from presentation.api.security.jwt import (
     hash_refresh_token,
     refresh_token_expires_at,
 )
-from presentation.api.security.password import needs_rehash, verify_password, hash_password
-
+from presentation.api.security.password import hash_password, needs_rehash, verify_password
 
 _log = get_logger("api.oauth")
 
@@ -72,7 +71,7 @@ async def password_grant(
     now: datetime | None = None,
 ) -> IssuedTokens:
     """Resource Owner Password Credentials grant."""
-    now = now or datetime.now(tz=timezone.utc)
+    now = now or datetime.now(tz=UTC)
     user = await uow.api_users.get_by_email(email)
     if user is None or not user.is_active:
         raise OAuthError("invalid_grant", "invalid email or password")
@@ -114,7 +113,7 @@ async def refresh_token_grant(
     now: datetime | None = None,
 ) -> IssuedTokens:
     """Exchange a valid refresh token for a new pair (rotation)."""
-    now = now or datetime.now(tz=timezone.utc)
+    now = now or datetime.now(tz=UTC)
     token_hash = hash_refresh_token(refresh_token)
     stored = await uow.refresh_tokens.find_by_hash(token_hash)
 
@@ -159,7 +158,7 @@ async def revoke_refresh_token(
     now: datetime | None = None,
 ) -> bool:
     """RFC 7009 revocation. Returns True if a token was actually revoked."""
-    now = now or datetime.now(tz=timezone.utc)
+    now = now or datetime.now(tz=UTC)
     token_hash = hash_refresh_token(refresh_token)
     stored = await uow.refresh_tokens.find_by_hash(token_hash)
     if stored is None or stored.revoked_at is not None:

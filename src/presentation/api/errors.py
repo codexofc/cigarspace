@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from typing import Any
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request, status
@@ -15,7 +14,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from infrastructure.observability.logging import get_logger
-
 
 _log = get_logger("api.errors")
 

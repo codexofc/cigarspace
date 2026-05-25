@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from decimal import Decimal
 
 import pytest
@@ -13,7 +13,6 @@ import pytest
 from domain.entities.customs import CigarCustomsMatch
 from domain.enums import Confidence, CustomsMatchStatus, MatchMethod
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
-
 
 pytestmark = pytest.mark.asyncio
 
@@ -36,7 +35,7 @@ async def _seed_match(
                 status=status,
                 pack_size_bucket=10,
                 signals={"exact": 1.0},
-                matched_at=datetime.now(tz=timezone.utc),
+                matched_at=datetime.now(tz=UTC),
                 matched_by="test-matcher",
             )
         )

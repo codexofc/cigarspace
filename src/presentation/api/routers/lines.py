@@ -16,7 +16,6 @@ from presentation.api.hypermedia import make_links
 from presentation.api.schemas.cigar import CigarSummary
 from presentation.api.schemas.line import LineResponse
 
-
 router = APIRouter(prefix="/lines", tags=["Lines"])
 
 

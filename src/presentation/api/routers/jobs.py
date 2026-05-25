@@ -13,7 +13,6 @@ from presentation.api.dependencies import AdminUserDep
 from presentation.api.hypermedia import make_links
 from presentation.api.schemas.job import JobResponse
 
-
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
 

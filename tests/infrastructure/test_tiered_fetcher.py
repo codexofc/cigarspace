@@ -3,7 +3,7 @@
 # See LICENSE for terms; COMMERCIAL_LICENSE.md for commercial use.
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -41,7 +41,7 @@ def _ok(url: str = "https://x.example.com/", tag: str = "ok", body: bytes = b"ok
         headers={"x-tag": tag, "content-type": "text/html"},
         body=body,
         elapsed_s=0.01,
-        fetched_at=datetime.now(tz=timezone.utc),
+        fetched_at=datetime.now(tz=UTC),
     )
 
 

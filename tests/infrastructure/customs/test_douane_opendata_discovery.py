@@ -9,7 +9,6 @@ from infrastructure.customs.discovery.douane_opendata import (
     DouaneOpenDataDiscovery,
 )
 
-
 _INDEX_HTML = """
 <html><body>
   <ul>

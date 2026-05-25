@@ -17,12 +17,16 @@ from __future__ import annotations
 import random
 import time
 from collections.abc import Sequence
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from curl_cffi.requests import AsyncSession
 from curl_cffi.requests.exceptions import (
     ConnectionError as CurlConnectionError,
+)
+from curl_cffi.requests.exceptions import (
     RequestException as CurlRequestException,
+)
+from curl_cffi.requests.exceptions import (
     Timeout as CurlTimeout,
 )
 
@@ -168,7 +172,7 @@ class CurlCffiFetcher:
                 headers=headers_out,
                 body=body,
                 elapsed_s=elapsed,
-                fetched_at=datetime.now(tz=timezone.utc),
+                fetched_at=datetime.now(tz=UTC),
             )
 
         if status == 429:

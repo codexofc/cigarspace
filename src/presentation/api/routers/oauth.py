@@ -22,7 +22,6 @@ from presentation.api.security.oauth import (
     revoke_refresh_token,
 )
 
-
 router = APIRouter(prefix="/oauth", tags=["OAuth"])
 
 

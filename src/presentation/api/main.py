@@ -13,7 +13,8 @@ from __future__ import annotations
 
 import contextlib
 from collections.abc import AsyncIterator
-from importlib.metadata import PackageNotFoundError, version as _pkg_version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _pkg_version
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,7 +28,6 @@ from infrastructure.persistence.session import build_engine, build_session_facto
 from presentation.api.errors import register_exception_handlers
 from presentation.api.middleware import register_middleware
 from presentation.api.rate_limit import register_rate_limit
-
 
 _log = get_logger("api.main")
 

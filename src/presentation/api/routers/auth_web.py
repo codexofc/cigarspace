@@ -33,7 +33,6 @@ from presentation.api.security.oauth import (
     revoke_refresh_token,
 )
 
-
 router = APIRouter(prefix="/auth", tags=["Auth (Web)"])
 
 
@@ -192,4 +191,4 @@ async def logout(
     # cookie-clearing Set-Cookie header survives next to the 204.
     clear_refresh_cookie(response, settings=settings, request=request)
     response.status_code = status.HTTP_204_NO_CONTENT
-    return None
+    return

@@ -27,7 +27,6 @@ from typing import Any
 
 from patchright.async_api import async_playwright
 
-
 WEB_URL = os.environ.get("E2E_WEB_URL", "http://127.0.0.1:3000")
 ADMIN_EMAIL = os.environ.get("E2E_ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("E2E_ADMIN_PASSWORD", "admin-dev-pass-2026")

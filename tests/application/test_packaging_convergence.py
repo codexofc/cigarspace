@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -88,7 +88,7 @@ class _CannedFetcher:
             headers={"content-type": "text/html; charset=utf-8"},
             body=self._body,
             elapsed_s=0.01,
-            fetched_at=datetime.now(tz=timezone.utc),
+            fetched_at=datetime.now(tz=UTC),
         )
 
     async def aclose(self) -> None:

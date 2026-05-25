@@ -15,14 +15,14 @@ from decimal import Decimal
 from urllib.parse import urlparse
 
 from application.ports.parser import ProductExtraction
+from domain.entities.cigar import BlendComponent, Cigar
 from domain.enums import (
     BlendComponentType,
     Confidence,
     FormatCategory,
     Intensity,
 )
-from domain.entities.cigar import BlendComponent, Cigar
-from domain.services.slug import compose_slug, slugify
+from domain.services.slug import compose_slug
 
 # ---------------------------------------------------------------------------
 # Countries — merchant labels (mostly French) → ISO 3166-1 alpha-3

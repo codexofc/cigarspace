@@ -10,15 +10,13 @@ from __future__ import annotations
 
 import hashlib
 from collections.abc import Sequence
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import ClassVar
 from uuid import uuid4
 
-import pytest
 import pytest_asyncio
 
-from application.ports.embedder import IEmbedder
 from application.use_cases.build_embeddings import BuildEmbeddingsUseCase
 from application.use_cases.match_cigar_to_customs import MatchCigarToCustomsUseCase
 from domain.entities.brand import Brand
@@ -35,7 +33,6 @@ from domain.enums import (
     FormatCategory,
 )
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
-
 
 _DIM = 768
 
@@ -110,7 +107,7 @@ async def seeded_uow(session_factory, clean_db):
             )
         )
 
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         entries = [
             CustomsPriceEntry(
                 publication_id=publication.id,
@@ -223,8 +220,9 @@ async def test_human_status_is_preserved_across_rematch(session_factory, seeded_
         # Replace via upsert directly on the model layer is tricky; we use the
         # repository to set the status (since add() doesn't update, we mutate
         # via raw SQL through the session for the test).
-        from infrastructure.persistence.models import CigarCustomsMatchModel
         from sqlalchemy import update
+
+        from infrastructure.persistence.models import CigarCustomsMatchModel
 
         await uow._session.execute(  # type: ignore[attr-defined]
             update(CigarCustomsMatchModel)

@@ -15,7 +15,6 @@ from domain.entities.brand import Brand
 from infrastructure.persistence.mappers import (
     apply_brand_to_model,
     brand_to_domain,
-    brand_to_model,
 )
 from infrastructure.persistence.models import BrandModel
 

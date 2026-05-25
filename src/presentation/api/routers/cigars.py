@@ -8,7 +8,7 @@ from __future__ import annotations
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Path, Query, Request, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request, Response, status
 
 from application.ports.cigar_repository import CigarFilters, CigarSort
 from domain.entities.cigar import Cigar
@@ -31,8 +31,6 @@ from presentation.api.schemas.cigar import (
     CigarSummary,
 )
 from presentation.api.schemas.search import SearchHit, SearchResponse
-from fastapi import Depends
-
 
 router = APIRouter(prefix="/cigars", tags=["Cigars"])
 

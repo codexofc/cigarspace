@@ -35,12 +35,10 @@ from typing import Any, ClassVar
 
 from application.ports.customs_extractor import (
     CustomsPriceExtraction,
-    ICustomsExtractorAdapter,
 )
 from infrastructure.customs._date_fr import parse_french_date
 from infrastructure.customs._ods import iter_rows
 from infrastructure.customs._price_fr import parse_price
-
 
 _PACK_RE = re.compile(
     r",\s*en\s+(\d+(?:[.,]\d+)?)\s*"

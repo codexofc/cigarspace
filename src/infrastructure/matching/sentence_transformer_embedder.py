@@ -25,7 +25,6 @@ from typing import ClassVar
 
 from infrastructure.observability.logging import get_logger
 
-
 _MODEL_NAME = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 _MODEL_DIM = 768
 

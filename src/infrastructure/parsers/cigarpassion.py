@@ -24,7 +24,7 @@ import json
 import re
 from decimal import Decimal
 from typing import Any
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
 from selectolax.parser import HTMLParser
 
@@ -34,7 +34,6 @@ from application.ports.parser import (
     ProductExtraction,
 )
 from infrastructure.observability.logging import get_logger
-
 
 _log = get_logger("parser.cigarpassion")
 

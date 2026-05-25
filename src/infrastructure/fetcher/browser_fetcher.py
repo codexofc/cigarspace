@@ -18,14 +18,18 @@ from __future__ import annotations
 
 import asyncio
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from patchright.async_api import (
     Error as PatchrightError,
+)
+from patchright.async_api import (
     Playwright,
-    TimeoutError as PatchrightTimeout,
     async_playwright,
+)
+from patchright.async_api import (
+    TimeoutError as PatchrightTimeout,
 )
 
 from application.ports.fetcher import (
@@ -151,7 +155,7 @@ class BrowserFetcher:
                         headers=headers_out,
                         body=body,
                         elapsed_s=elapsed,
-                        fetched_at=datetime.now(tz=timezone.utc),
+                        fetched_at=datetime.now(tz=UTC),
                     )
 
                 if status == 429:

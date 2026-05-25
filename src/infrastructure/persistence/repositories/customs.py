@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from uuid import UUID
 
 from sqlalchemy import select
@@ -33,7 +33,6 @@ from infrastructure.persistence.models import (
     CustomsPublicationModel,
     CustomsSourceModel,
 )
-
 
 # ---------------------------------------------------------------------------
 # CustomsSource
@@ -239,7 +238,8 @@ class PgCustomsPublicationRepository:
         return [customs_publication_to_domain(m) for m in result.scalars().all()]
 
     async def count_by_source(self, source_id: UUID) -> int:
-        from sqlalchemy import func as _func, select as _select
+        from sqlalchemy import func as _func
+        from sqlalchemy import select as _select
 
         result = await self._session.execute(
             _select(_func.count())
@@ -529,9 +529,8 @@ class PgCigarCustomsMatchRepository:
         notes: str | None = None,
         when: datetime | None = None,
     ) -> CigarCustomsMatch:
-        from datetime import timezone as _tz
 
-        when = when or datetime.now(tz=_tz.utc)
+        when = when or datetime.now(tz=UTC)
         new_status = (
             CustomsMatchStatus.HUMAN_ACCEPTED if accepted else CustomsMatchStatus.HUMAN_REJECTED
         )

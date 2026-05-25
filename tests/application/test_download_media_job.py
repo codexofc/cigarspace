@@ -11,7 +11,7 @@ Real SeaweedFS interaction is covered by smoke tests (network marker).
 from __future__ import annotations
 
 import io
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -55,7 +55,7 @@ class _MultiFetcher:
             headers={"content-type": "image/png"},
             body=v,
             elapsed_s=0.01,
-            fetched_at=datetime.now(tz=timezone.utc),
+            fetched_at=datetime.now(tz=UTC),
         )
 
     async def aclose(self) -> None:

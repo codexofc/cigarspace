@@ -22,7 +22,6 @@ from domain.entities.cigar import Cigar
 from infrastructure.matching._normalize import normalize
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
 
-
 _RRF_CONSTANT = 60
 
 

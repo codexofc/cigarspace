@@ -22,7 +22,6 @@ from typing import Any, ClassVar
 
 from application.ports.customs_extractor import (
     CustomsPriceExtraction,
-    ICustomsExtractorAdapter,
 )
 from infrastructure.customs.extractors.legifrance_html import LegifranceHtmlExtractor
 from infrastructure.customs.extractors.pdf_table_extractor import PdfTableExtractor

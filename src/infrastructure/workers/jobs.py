@@ -13,17 +13,16 @@ Jobs registered here:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
 from application.ports.fetcher import FetchError, FetchRequest
-from application.use_cases.build_embeddings import BuildEmbeddingsUseCase, Target
+from application.use_cases.build_embeddings import BuildEmbeddingsUseCase
 from application.use_cases.ingest_customs_publication import (
     IngestCustomsPublicationUseCase,
 )
 from application.use_cases.ingest_product import (
-    IngestOutcome,
     IngestProductUrlUseCase,
 )
 from application.use_cases.match_cigar_to_customs import MatchCigarToCustomsUseCase
@@ -240,7 +239,7 @@ async def download_media_job(ctx: dict[str, Any], asset_id: str) -> dict[str, An
 
     # Step 4: hash + upsert MediaBlob (idempotent on content_hash)
     content_hash = blake3_hex(normalized.data)
-    now = datetime.now(tz=timezone.utc)
+    now = datetime.now(tz=UTC)
     new_blob = MediaBlob(
         content_hash=content_hash,
         storage_key=f"{content_hash[:2]}/{content_hash}.{normalized.ext}",

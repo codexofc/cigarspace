@@ -21,7 +21,6 @@ from infrastructure.parsers.cigarpassion import (
     CigarpassionProductParser,
 )
 
-
 _FIXTURES = Path(__file__).parent.parent / "fixtures" / "cigarpassion"
 
 

@@ -19,11 +19,9 @@ from selectolax.parser import HTMLParser, Node
 
 from application.ports.customs_extractor import (
     CustomsPriceExtraction,
-    ICustomsExtractorAdapter,
 )
 from infrastructure.customs._date_fr import parse_french_date
 from infrastructure.customs._price_fr import parse_price
-
 
 # Header keywords → canonical role
 _HEADER_MAP: dict[str, str] = {

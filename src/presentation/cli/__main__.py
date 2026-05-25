@@ -6,7 +6,8 @@
 from __future__ import annotations
 
 import asyncio
-from importlib.metadata import PackageNotFoundError, version as pkg_version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as pkg_version
 
 import typer
 from rich.console import Console
@@ -15,7 +16,7 @@ from rich.table import Table
 from application.use_cases.crawl_listing import CrawlListingUseCase
 from application.use_cases.ingest_product import IngestProductUrlUseCase
 from infrastructure.config import get_settings
-from infrastructure.fetcher.curl_cffi_fetcher import CurlCffiFetcher, DEFAULT_IMPERSONATE_POOL
+from infrastructure.fetcher.curl_cffi_fetcher import DEFAULT_IMPERSONATE_POOL, CurlCffiFetcher
 from infrastructure.observability.logging import configure_logging, get_logger
 from infrastructure.parsers import (
     UnknownDomainError,

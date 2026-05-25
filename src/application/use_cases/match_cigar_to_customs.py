@@ -12,7 +12,7 @@ loop is pure Python and runs over ~50 candidates per cigar.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from application.ports.matching_repository import (
@@ -36,7 +36,6 @@ from infrastructure.matching.scorer import (
 )
 from infrastructure.observability.logging import get_logger
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
-
 
 _MATCHER_VERSION = "matcher-v1.0+mpnet"
 
@@ -94,7 +93,7 @@ class MatchCigarToCustomsUseCase:
             if current is None or score > current[0]:
                 best_per_bucket[bucket] = (score, signals, cand)
 
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         for bucket, (score, signals, cand) in best_per_bucket.items():
             status, confidence = decide(score)
             if status == CustomsMatchStatus.AUTO_REJECTED:

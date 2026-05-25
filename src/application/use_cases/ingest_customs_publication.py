@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from application.ports.fetcher import FetchError, FetchRequest, IFetcher
@@ -74,7 +74,7 @@ class IngestCustomsPublicationUseCase:
                     publication_id,
                     status=CustomsPublicationStatus.FAILED,
                     failure_reason=f"fetch: {exc}",
-                    fetched_at=datetime.now(tz=timezone.utc),
+                    fetched_at=datetime.now(tz=UTC),
                 )
                 await uow.commit()
                 return IngestPublicationReport(
@@ -93,7 +93,7 @@ class IngestCustomsPublicationUseCase:
                     publication_id,
                     status=CustomsPublicationStatus.FAILED,
                     failure_reason=f"fetch: {exc}",
-                    fetched_at=datetime.now(tz=timezone.utc),
+                    fetched_at=datetime.now(tz=UTC),
                 )
                 await uow.commit()
                 return IngestPublicationReport(
@@ -113,7 +113,7 @@ class IngestCustomsPublicationUseCase:
             await uow.customs_publications.mark_status(
                 publication_id,
                 status=CustomsPublicationStatus.SKIPPED,
-                fetched_at=datetime.now(tz=timezone.utc),
+                fetched_at=datetime.now(tz=UTC),
             )
             await uow.commit()
             return IngestPublicationReport(
@@ -136,7 +136,7 @@ class IngestCustomsPublicationUseCase:
                 publication_id,
                 status=CustomsPublicationStatus.FAILED,
                 failure_reason=f"extract: {exc}",
-                fetched_at=datetime.now(tz=timezone.utc),
+                fetched_at=datetime.now(tz=UTC),
                 content_hash=new_hash,
             )
             await uow.commit()
@@ -147,7 +147,7 @@ class IngestCustomsPublicationUseCase:
             )
 
         # 4. UPSERT each entry on the natural key
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         inserted = 0
         for x in extractions:
             entry = CustomsPriceEntry(

@@ -27,10 +27,8 @@ from selectolax.parser import HTMLParser
 
 from application.ports.customs_discovery import (
     DiscoveredPublication,
-    ICustomsDiscoveryAdapter,
 )
 from infrastructure.customs._date_fr import parse_french_date
-
 
 # "Maquette JORF 1er juin 2026.ods" / "Maquette JORF 1er février 2026.ods"
 _FILENAME_DATE_RE = re.compile(

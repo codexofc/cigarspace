@@ -28,15 +28,15 @@ from arq.connections import RedisSettings as ArqRedisSettings
 import infrastructure.customs  # noqa: F401
 from infrastructure.config import get_settings
 from infrastructure.fetcher.curl_cffi_fetcher import (
-    CurlCffiFetcher,
     DEFAULT_IMPERSONATE_POOL,
+    CurlCffiFetcher,
+)
+from infrastructure.matching.sentence_transformer_embedder import (
+    SentenceTransformerEmbedder,
 )
 from infrastructure.media.seaweed_storage import SeaweedS3Storage
 from infrastructure.observability.logging import configure_logging, get_logger
 from infrastructure.persistence.session import build_engine, build_session_factory
-from infrastructure.matching.sentence_transformer_embedder import (
-    SentenceTransformerEmbedder,
-)
 from infrastructure.workers.jobs import (
     compute_embeddings_job,
     crawl_listing_job,

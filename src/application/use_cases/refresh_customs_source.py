@@ -10,7 +10,7 @@ Idempotent: re-running immediately yields zero new publications.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from application.ports.fetcher import FetchError, FetchRequest, IFetcher
 from application.services.customs_registry import CustomsRegistry
@@ -62,7 +62,7 @@ class RefreshCustomsSourceUseCase:
             except FetchError as exc:
                 await uow.customs_sources.update_check_state(
                     source_code,
-                    last_checked_at=datetime.now(tz=timezone.utc),
+                    last_checked_at=datetime.now(tz=UTC),
                     consecutive_failures=source.consecutive_failures + 1,
                 )
                 await uow.commit()
@@ -104,7 +104,7 @@ class RefreshCustomsSourceUseCase:
 
         await uow.customs_sources.update_check_state(
             source_code,
-            last_checked_at=datetime.now(tz=timezone.utc),
+            last_checked_at=datetime.now(tz=UTC),
             last_publication_seen_ref=latest_ref_seen,
             consecutive_failures=0,
         )

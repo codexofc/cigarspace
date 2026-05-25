@@ -13,7 +13,7 @@ benefits; remember to call `await fetcher.aclose()` on shutdown.
 from __future__ import annotations
 
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import httpx
 
@@ -126,7 +126,7 @@ class HttpxFetcher:
                 headers=headers_out,
                 body=body,
                 elapsed_s=elapsed,
-                fetched_at=datetime.now(tz=timezone.utc),
+                fetched_at=datetime.now(tz=UTC),
             )
 
         if status == 429:

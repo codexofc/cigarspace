@@ -12,7 +12,6 @@ from fastapi import Request
 
 from presentation.api.schemas.base import Links, PageLinks
 
-
 _API_PREFIX = "/api/v1"
 
 

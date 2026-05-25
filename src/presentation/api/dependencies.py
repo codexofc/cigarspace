@@ -16,13 +16,13 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Query, Request, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from domain.entities.api_user import ApiUser
-from infrastructure.config.settings import ApiSettings, get_settings as _build_settings
+from infrastructure.config.settings import ApiSettings
+from infrastructure.config.settings import get_settings as _build_settings
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
 from presentation.api.security.jwt import JwtError, decode_access_token
-
 
 # ---------------------------------------------------------------------------
 # Settings

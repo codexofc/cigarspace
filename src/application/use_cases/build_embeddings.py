@@ -20,7 +20,6 @@ from infrastructure.matching._normalize import customs_text, normalize
 from infrastructure.observability.logging import get_logger
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
 
-
 Target = Literal["cigar", "customs", "all"]
 
 

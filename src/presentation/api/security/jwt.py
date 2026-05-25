@@ -19,13 +19,12 @@ from __future__ import annotations
 import hashlib
 import secrets
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
 
 import jwt
 
 from infrastructure.config.settings import ApiSettings
-
 
 _REFRESH_TOKEN_BYTES = 32
 
@@ -53,7 +52,7 @@ def encode_access_token(
     now: datetime | None = None,
 ) -> tuple[str, datetime]:
     """Mint an access token and return ``(token, expires_at)``."""
-    now = now or datetime.now(tz=timezone.utc)
+    now = now or datetime.now(tz=UTC)
     expires_at = now + timedelta(seconds=settings.access_token_expire_seconds)
     payload = {
         "sub": str(user_id),
@@ -82,8 +81,8 @@ def decode_access_token(token: str, *, settings: ApiSettings) -> AccessTokenClai
             sub=UUID(payload["sub"]),
             scope=tuple(payload.get("scope") or ()),
             jti=UUID(payload["jti"]),
-            iat=datetime.fromtimestamp(payload["iat"], tz=timezone.utc),
-            exp=datetime.fromtimestamp(payload["exp"], tz=timezone.utc),
+            iat=datetime.fromtimestamp(payload["iat"], tz=UTC),
+            exp=datetime.fromtimestamp(payload["exp"], tz=UTC),
         )
     except (KeyError, ValueError, TypeError) as exc:
         raise JwtError(f"malformed claims: {exc}") from exc
@@ -105,5 +104,5 @@ def hash_refresh_token(plain: str) -> str:
 
 
 def refresh_token_expires_at(settings: ApiSettings, *, now: datetime | None = None) -> datetime:
-    now = now or datetime.now(tz=timezone.utc)
+    now = now or datetime.now(tz=UTC)
     return now + timedelta(seconds=settings.refresh_token_expire_seconds)

@@ -14,7 +14,6 @@ from __future__ import annotations
 import re
 import unicodedata
 
-
 _DROP_BRAND_PREFIXES = ("divers ", "divers- ", "DIVERS ")
 _PUNCT_RE = re.compile(r"[^\w\s]", re.UNICODE)
 _WS_RE = re.compile(r"\s+")

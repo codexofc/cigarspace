@@ -22,7 +22,6 @@ from presentation.api.schemas.base import PaginatedResponse
 from presentation.api.schemas.brand import BrandResponse
 from presentation.api.schemas.line import LineResponse
 
-
 router = APIRouter(prefix="/brands", tags=["Brands"])
 
 

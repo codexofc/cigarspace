@@ -20,7 +20,6 @@ from presentation.api.hypermedia import (
 from presentation.api.schemas.base import PaginatedResponse
 from presentation.api.schemas.customs import CustomsSourceResponse
 
-
 router = APIRouter(prefix="/customs-sources", tags=["Customs Sources"])
 
 

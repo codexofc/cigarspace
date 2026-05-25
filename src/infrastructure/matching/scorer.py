@@ -14,7 +14,6 @@ from decimal import Decimal
 
 from domain.enums import Confidence, CustomsMatchStatus
 
-
 # Tuning knobs — kept in code so they ship as a single artifact.
 WEIGHTS: dict[str, float] = {
     "exact": 0.40,

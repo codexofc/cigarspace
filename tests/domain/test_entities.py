@@ -3,7 +3,7 @@
 # See LICENSE for terms; COMMERCIAL_LICENSE.md for commercial use.
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
 
@@ -97,7 +97,7 @@ def test_customs_price_entry_requires_publication() -> None:
             unit_price=Decimal("18.50"),
             raw_brand_label="COHIBA",
             raw_product_label="ROBUSTO",
-            extracted_at=datetime(2024, 3, 1, tzinfo=timezone.utc),
+            extracted_at=datetime(2024, 3, 1, tzinfo=UTC),
             extractor_version="legifrance-html-1.0",
         )
 
@@ -110,7 +110,7 @@ def test_customs_match_requires_score_in_range() -> None:
             match_method=MatchMethod.EXACT,
             score=Decimal("1.5"),  # > 1.0
             confidence=Confidence.HIGH,
-            matched_at=datetime(2024, 3, 1, tzinfo=timezone.utc),
+            matched_at=datetime(2024, 3, 1, tzinfo=UTC),
             matched_by="system",
         )
 
@@ -126,7 +126,7 @@ def test_customs_entry_full() -> None:
         raw_brand_label="COHIBA",
         raw_product_label="ROBUSTO",
         pack_size=25,
-        extracted_at=datetime(2024, 3, 1, tzinfo=timezone.utc),
+        extracted_at=datetime(2024, 3, 1, tzinfo=UTC),
         extractor_version="legifrance-html-1.0",
     )
     assert e.unit_price == Decimal("18.50")

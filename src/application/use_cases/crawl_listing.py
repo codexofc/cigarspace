@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from application.ports.fetcher import FetchError, FetchRequest, IFetcher
 from application.ports.parser import IListingParser, IProductParser
 from application.use_cases.ingest_product import (
@@ -23,7 +25,6 @@ from application.use_cases.ingest_product import (
 )
 from infrastructure.observability.logging import get_logger
 from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
 @dataclass

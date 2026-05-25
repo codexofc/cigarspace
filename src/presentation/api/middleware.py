@@ -8,7 +8,7 @@ headers, gzip compression. CORS and rate-limit are wired in main.py.
 from __future__ import annotations
 
 import time
-from typing import Callable
+from collections.abc import Callable
 from uuid import uuid4
 
 import structlog
@@ -18,7 +18,6 @@ from starlette.middleware.gzip import GZipMiddleware
 
 from infrastructure.config.settings import ApiSettings
 from infrastructure.observability.logging import get_logger
-
 
 _REQUEST_ID_HEADER = "X-Request-Id"
 _log = get_logger("api.access")

@@ -15,7 +15,6 @@ from presentation.api.etag import compute_etag, maybe_not_modified
 from presentation.api.hypermedia import make_links
 from presentation.api.schemas.customs import CustomsEntryResponse
 
-
 router = APIRouter(prefix="/customs-entries", tags=["Customs Entries"])
 
 
