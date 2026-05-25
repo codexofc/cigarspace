@@ -17,10 +17,9 @@ from __future__ import annotations
 
 import hashlib
 from collections.abc import AsyncIterator, Sequence
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import ClassVar
-from uuid import uuid4
 
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -36,7 +35,6 @@ from domain.entities.customs import (
     CustomsSource,
 )
 from domain.enums import (
-    CustomsMatchStatus,
     CustomsPublicationStatus,
     FormatCategory,
 )
@@ -44,7 +42,6 @@ from infrastructure.persistence.unit_of_work import SqlAlchemyUnitOfWork
 from presentation.api.dependencies import get_embedder, get_session_factory
 from presentation.api.main import create_app
 from presentation.api.security.password import hash_password
-
 
 _DIM = 768
 
@@ -113,8 +110,8 @@ async def seeded_universe(session_factory):
             )
         )
 
-        # Admin + reader users
-        admin = await uow.api_users.add(
+        # Admin + reader users — referenced later by email; suppress F841.
+        await uow.api_users.add(
             ApiUser(
                 email="admin@example.com",
                 full_name="Admin",
@@ -122,7 +119,7 @@ async def seeded_universe(session_factory):
                 is_admin=True,
             )
         )
-        reader = await uow.api_users.add(
+        await uow.api_users.add(
             ApiUser(
                 email="reader@example.com",
                 full_name="Reader",
@@ -154,7 +151,7 @@ async def seeded_universe(session_factory):
                 effective_date=date(2026, 6, 1),
             )
         )
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         entry = await uow.customs_prices.upsert(
             CustomsPriceEntry(
                 publication_id=publication.id,
