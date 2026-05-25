@@ -1,39 +1,65 @@
 version: 2
 updates:
+  # Python (FastAPI, workers, CLI)
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+      interval: "monthly"
+    open-pull-requests-limit: 3
     labels: ["dependencies", "python"]
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
+    groups:
+      python-minor-and-patch:
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
+  # Web (admin SPA)
   - package-ecosystem: "npm"
     directory: "/web"
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+      interval: "monthly"
+    open-pull-requests-limit: 3
     labels: ["dependencies", "web"]
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
+    groups:
+      web-minor-and-patch:
+        update-types: ["minor", "patch"]
+      web-types:
+        patterns: ["@types/*"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
+  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    open-pull-requests-limit: 2
     labels: ["dependencies", "ci"]
     commit-message:
       prefix: "chore(ci)"
       include: "scope"
+    groups:
+      actions-all:
+        patterns: ["*"]
 
+  # Docker base images
   - package-ecosystem: "docker"
     directory: "/docker"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    open-pull-requests-limit: 2
     labels: ["dependencies", "docker"]
     commit-message:
       prefix: "chore(docker)"
       include: "scope"
+    groups:
+      docker-all:
+        patterns: ["*"]
