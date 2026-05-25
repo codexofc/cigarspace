@@ -16,7 +16,7 @@
 # --- 1. Build the SPA --------------------------------------------------------
 FROM node:20-alpine AS web-builder
 WORKDIR /web
-COPY web/package.json web/package-lock.json* ./
+COPY web/package.json web/package-lock.json* web/.npmrc* ./
 RUN npm install --no-audit --no-fund
 COPY web/. ./
 RUN npm run build
