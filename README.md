@@ -12,8 +12,9 @@
 <p align="center">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-PolyForm--Noncommercial--1.0.0-blue.svg" /></a>
   <a href="COMMERCIAL_LICENSE.md"><img alt="Commercial" src="https://img.shields.io/badge/commercial-on%20request-orange.svg" /></a>
-  <a href=".github/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/badge/CI-GitHub%20Actions-success" /></a>
-  <a href="https://github.com/codexofc/cigarspace/releases"><img alt="Release" src="https://img.shields.io/badge/release-v1.0.0-brightgreen" /></a>
+  <a href="https://github.com/codexofc/cigarspace/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/codexofc/cigarspace/actions/workflows/ci.yml/badge.svg?branch=main" /></a>
+  <a href="https://codecov.io/gh/codexofc/cigarspace"><img alt="Coverage" src="https://codecov.io/gh/codexofc/cigarspace/branch/main/graph/badge.svg" /></a>
+  <a href="https://github.com/codexofc/cigarspace/releases"><img alt="Release" src="https://img.shields.io/github/v/release/codexofc/cigarspace?display_name=tag&sort=semver" /></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.12-blue" />
   <img alt="Node" src="https://img.shields.io/badge/node-20-green" />
   <img alt="Postgres" src="https://img.shields.io/badge/postgres-16%2Bpgvector-336791" />

@@ -1,0 +1,41 @@
+# Codecov configuration.
+# See https://docs.codecov.com/docs/codecov-yaml for the full reference.
+
+coverage:
+  # Round to one decimal in the UI / PR comments.
+  precision: 1
+  round: down
+  range: "70...95"
+
+  status:
+    project:
+      default:
+        # Project-wide gate matches the local pytest gate.
+        target: 82%
+        threshold: 1%   # tolerate a 1-point drop before failing
+        if_ci_failed: error
+    patch:
+      default:
+        # New code introduced in a PR must itself be well-tested.
+        target: 80%
+        threshold: 2%
+        if_ci_failed: error
+
+# Don't fail the upload if the same commit is processed twice.
+parsers:
+  v1:
+    include_full_missed_files: true
+
+ignore:
+  - "src/**/__init__.py"
+  - "src/presentation/cli/__main__.py"
+  - "tests/**"
+  - "migrations/**"
+  - "docs/**"
+
+comment:
+  layout: "header, diff, flags, components, files, footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true

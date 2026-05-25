@@ -68,6 +68,7 @@ dev = [
     "respx>=0.21,<1",
     "ruff>=0.4,<1",
     "mypy>=1.10,<2",
+    "pytest-cov>=7.1.0",
 ]
 
 [build-system]
@@ -127,9 +128,37 @@ asyncio_default_fixture_loop_scope = "session"
 asyncio_default_test_loop_scope = "session"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["-ra", "--strict-markers", "--strict-config"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=xml",
+    "--cov-fail-under=82",
+]
 markers = [
     "integration: tests requiring live services (PG, Redis)",
     "e2e: end-to-end pipeline tests",
     "network: tests that hit real remote hosts (kept out of default runs)",
 ]
+
+[tool.coverage.run]
+source = ["src"]
+branch = false
+omit = [
+    "src/**/__init__.py",
+    "src/presentation/cli/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+    "\\.\\.\\.",
+    "pragma: no cover",
+]
+show_missing = true
+skip_covered = true
+precision = 1

@@ -65,12 +65,19 @@ jobs:
           uv run ruff format --check src tests
       - name: Mypy (best-effort, non-blocking)
         run: uv run mypy src || true
-      - name: Pytest
+      - name: Pytest (with coverage)
         run: |
           uv run pytest -q \
             -m "not network" \
             --ignore=tests/integration \
             --maxfail=5
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          flags: backend
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   frontend:
     name: Frontend (lint + build + test)
